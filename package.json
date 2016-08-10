@@ -1,0 +1,24 @@
+{
+  "name": "mock-github-api",
+  "version": "1.0.0",
+  "description": "Mock API server for Github",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mzabriskie/mock-github-api"
+  },
+  "author": "Matt Zabriskie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mzabriskie/mock-github-api/issues"
+  },
+  "homepage": "https://github.com/mzabriskie/mock-github-api",
+  "dependencies": {
+    "express": "^4.14.0",
+    "faker": "^3.1.0"
+  }
+}
