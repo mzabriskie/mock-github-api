@@ -1,6 +1,10 @@
 var faker = require('faker');
+var color = require('color');
+var cors = require('cors');
 var express = require('express');
 var app = express();
+
+app.use(cors());
 
 app.get('/users/:username', function (req, res) {
   res.send(prepare(USER_TEMPLATE, {':username': req.params.username}));
@@ -38,6 +42,8 @@ app.get('/users/:username/repos', function (req, res)  {
 
 app.listen(3000);
 
+console.log('mock-github-api listening on port 3000');
+
 function prepare(template, params) {
   if (typeof template === 'object') {
     template = JSON.stringify(template);
@@ -57,6 +63,10 @@ function prepare(template, params) {
 }
 
 function replaceAll(subject, find, replace) {
+  // Dirty little hack to keep numbers as numbers
+  if (find === ':random_number') {
+    find = '\":random_number\"';
+  }
   return subject.split(find).join(replace);
 }
 
@@ -83,13 +93,20 @@ var TOKENS = {
 
   ':random_location': function () {
     return faker.address.city() + ', ' + faker.address.stateAbbr();
+  },
+
+  ':random_color': function () {
+    var r = Math.round(Math.random() * 255);
+    var g = Math.round(Math.random() * 255);
+    var b = Math.round(Math.random() * 255);
+    return color({r, g, b}).hexString().replace(/^#/, '');
   }
 };
 
 var USER_TEMPLATE = {
   "login": ":username",
   "id": ":random_number",
-  "avatar_url": "https://placehold.it/460/ffffff/E8117F",
+  "avatar_url": "https://placehold.it/460/:random_color/ffffff?text=:username",
   "gravatar_id": "",
   "url": "https://api.github.com/users/:username",
   "html_url": "https://github.com/:username",
@@ -126,7 +143,7 @@ var REPO_TEMPLATE = {
   "owner": {
     "login": ":username",
     "id": 199035,
-    "avatar_url": "https://placehold.it/460/ffffff/E8117F",
+    "avatar_url": "https://placehold.it/460/:random_color/ffffff?text=:random_name",
     "gravatar_id": "",
     "url": "https://api.github.com/users/:username",
     "html_url": "https://github.com/:username",
@@ -218,6 +235,6 @@ var ORG_TEMPLATE = {
   "issues_url": "https://api.github.com/orgs/:random_name/issues",
   "members_url": "https://api.github.com/orgs/:random_name/members{/member}",
   "public_members_url": "https://api.github.com/orgs/:random_name/public_members{/member}",
-  "avatar_url": "https://placehold.it/460/ffffff/cccccc",
+  "avatar_url": "https://placehold.it/460/:random_color/ffffff?text=:random_name",
   "description": ":random_description"
 };

@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/mzabriskie/mock-github-api",
   "dependencies": {
+    "color": "^0.11.3",
+    "cors": "^2.7.1",
     "express": "^4.14.0",
     "faker": "^3.1.0"
   }
